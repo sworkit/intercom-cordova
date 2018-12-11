@@ -27,7 +27,9 @@ import io.intercom.android.sdk.push.IntercomPushClient;
 public class IntercomBridge extends CordovaPlugin {
 
     private static final String CUSTOM_ATTRIBUTES = "custom_attributes";
-
+    private static final String INTERCOM_API_KEY = "android_sdk-ae8eb54f7c9b81ae688493ed20d559c8a97ab12a";
+    private static final String INTERCOM_APP_ID = "fbnnepod";
+    
     @Override protected void pluginInitialize() {
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override public void run() {
@@ -74,11 +76,11 @@ public class IntercomBridge extends CordovaPlugin {
                 }
             }
 
-            //Get app credentials from config.xml or the app bundle if they can't be found
-            String apiKey = preferences.getString("intercom-android-api-key", "");
-            String appId = preferences.getString("intercom-app-id", "");
-
-            Intercom.initialize(cordova.getActivity().getApplication(), apiKey, appId);
+            // Get app credentials from config.xml or the app bundle if they can't be found
+//            String apiKey = preferences.getString("intercom-android-api-key", "");
+//            String appId = preferences.getString("intercom-app-id", "");
+            // plugin edit, hard code sworkit api keys
+            Intercom.initialize(cordova.getActivity().getApplication(), INTERCOM_API_KEY, INTERCOM_APP_ID);
         } catch (Exception e) {
             Log.e("Intercom-Cordova", "ERROR: Something went wrong when initializing Intercom. Have you set your APP_ID and ANDROID_API_KEY?", e);
         }
