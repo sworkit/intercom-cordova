@@ -1,5 +1,33 @@
 # Intercom for Cordova/PhoneGap
 
+## 8.0.0 (2019-11-04)
+
+* Upgraded to version 6.0.0 of the iOS and Android SDK.
+* iOS 10 is now the minimum version of iOS that is supported by the Intercom iOS SDK.
+* We have deprecated support for iOS 8 & 9.
+* Android API level 21 (v5 - Lollipop) is now the minimum version of Android that is supported by the Intercom Android SDK.
+* If your app still support API levels before 21 you'll need to bump minSdkVersion to 21 in order to use version 6+ of our SDK.
+
+## 7.1.1 (2019-09-05)
+
+* * The Intercom Cordova plugin has been updated to use v5.4.1 of the Intercom Android SDK as the latest version. This is because v5.5.0 of the Intercom Android SDK targets Android 10, which is currently unsupported by Cordova.
+
+## 7.1.0 (2019-07-17)
+
+* Updated to cordova-android 8.0.0 and cordova-ios 5.0.0
+* Removed GCM as [Google has removed GCM](https://developers.google.com/cloud-messaging/faq)
+* Updated Firebase version
+* Updated our Example app to use the newer versions of Cordova
+* Now using the latest versions of the Intercom [Android SDK](https://github.com/intercom/intercom-android/releases) and [iOS SDK](https://github.com/intercom/intercom-android/releases) with support for Custom Bots!
+
+## 7.0.0 (2019-06-20)
+
+* Cordova 9 support
+
+## 6.2.0 (2018-12-18)
+
+* Support sending a push token to Intercom manually with the addition of the method `sendPushTokenToIntercom`
+
 ## 6.1.0 (2018-07-20)
 
 **Enable mobile users to help themselves with the new mobile SDK for iOS and Android 🎉 😃**
@@ -14,7 +42,7 @@ The new Intercom mobile SDK brings the Messenger Home to your mobile application
 
 * `displayConversationsList` - Use `displayMessenger` instead.
 
-These deprecated methods will still work, but will be removed in a future release. 
+These deprecated methods will still work, but will be removed in a future release.
 
 ## 6.0.0 (2018-06-12)
 

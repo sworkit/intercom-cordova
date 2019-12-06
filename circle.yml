@@ -3,7 +3,7 @@ version: 2
 jobs:
   ios:
     macos:
-      xcode: "9.0"
+      xcode: "11.1.0"
     shell: /bin/bash --login -eo pipefail
     steps:
       - checkout
@@ -12,7 +12,7 @@ jobs:
           command: command -v node || brew install node
       - run:
           name: Install Cordova
-          command: npm install -g cordova
+          command: npm install -g cordova@9.0.0
       - run:
           name: Setup CocoaPods
           command: curl -sS https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash
@@ -24,27 +24,31 @@ jobs:
           command: cd Example && cordova plugin add ../intercom-plugin
       - run:
           name: Build
-          command: cd Example && cordova build ios
+          command: cd Example && cordova build ios --buildFlag="-UseModernBuildSystem=0"
 
   android:
     docker:
-      - image: circleci/android:api-26-alpha
+      - image: circleci/android:api-28
     environment:
       - JVM_OPTS: -Xmx3200m
     working_directory: ~/project/Example
     steps:
       - checkout
       - run:
+          name: Accept all Android licenses
+          command: |
+            yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses || if [ $? -ne '141' ]; then exit $?; fi;
+      - run:
           name: Install node/npm
           command: |
-            curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-            sudo apt-get install -y nodejs
+            curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+            sudo apt install -y nodejs
       - run:
           name: Install gradle
           command: sudo apt-get install gradle
       - run:
           name: Install Cordova
-          command: sudo npm install -g cordova
+          command: sudo npm install -g cordova@9.0.0
       - run:
           name: Add Android platform
           command: cd Example && cordova platform add android
@@ -57,18 +61,20 @@ jobs:
 
   publish:
     docker:
-      - image: circleci/android:api-26-alpha
+      - image: circleci/android:api-28
     steps:
       - checkout
       - run:
           name: Install node/npm
           command: |
-            curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-            sudo apt-get install -y nodejs
+            curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+            sudo apt install -y nodejs
       - run:
           name: Publish to npm
           command: |
-            echo -e "$NPM_USER\n$NPM_PASSWORD\n$NPM_EMAIL" | npm login
+            echo -e "$NPM_USER\n$NPM_PASSWORD\n$NPM_EMAIL"
+            npm install -g npm-cli-login
+            npm-cli-login -u $NPM_USER -p $NPM_PASSWORD -e $NPM_EMAIL
             cd intercom-plugin && npm publish
 
 workflows:
